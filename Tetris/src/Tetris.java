@@ -32,6 +32,7 @@ public class Tetris {
 		Board.drawGrid();					// Draw initial board
 		Board.drawRightGrid();
 		Board.drawRightCommands();
+		Board.fillMatrix();
 	}
 
 	private static final String GAME_OVER_TXT = "GAME  OVER";

@@ -1,9 +1,13 @@
 import isel.leic.pg.Console;
 
 public class Piece {
+	
 	private final int type;  	// Type of piece (I,J,L,O,S,T or Z)
 	private int line, column;	// Current position
     private int direction; 		// Current direction (0,1,2 or 3)
+    
+    private static final int GRID_LINES=4, GRID_COLS=4;
+    private static final int MASK_INIT=0x8000;
     
     public Piece(int type) {	// Create a piece of one type
       this.type = type;
@@ -55,17 +59,46 @@ public class Piece {
 		return true;
 	}
        
-	private static boolean validBlocks(int line, int col, int blocks) {
+	private boolean validBlocks(int line, int col, int blocks) {
     	int mask = MASK_INIT;
     	for(int l=0; l<GRID_LINES ; ++l)				// For each line
+    		for(int c=0; c<GRID_COLS ; ++c , mask>>=1 ){	// For each column
+    			System.out.print(line+l);
+    			System.out.print("  ");
+    			System.out.println(col+c);
+    			if ((blocks&mask)!=0 && !Board.validPosition(line+l,col+c)){
+    				return false; 				// If the block has no room
+    			}
+    			if (Board.colision(line+l, col+c, blocks, this)) 
+    				return false; 				// If the block has no room
+    		}
+		return true;
+	}
+	
+	/*private boolean colision(int line, int col, int blocks) {
+		/*int mask = MASK_INIT;
+    	for(int l=0; l<GRID_LINES ; ++l)				// For each line
     		for(int c=0; c<GRID_COLS ; ++c , mask>>=1 )	// For each column
-    			if ((blocks&mask)!=0 && !Board.validPosition(line+l,col+c)) 
+    			if ((blocks&mask)!=0 && Board.colision(line+l,col+c, blocks, this)) 
     				return false; 				// If the block has no room
 		return true;
+		if (Board.colision(line,col, blocks, this)) 
+			return false; 				// If the block has no room
+		return true;
+	}*/
+	
+	public void storeInMatrix(int line, int col) {
+	int mask = MASK_INIT;
+	int blocks = BLOCKS[type][direction];
+	for(int l=0; l<GRID_LINES ; ++l)				// For each line
+		for(int c=0; c<GRID_COLS ; ++c , mask>>=1 )	// For each column
+			if ((blocks&mask)!=0) { 		// If has a block
+			Board.writeInMatrix(line+l, col+c, COLORS[type]); // Mover cursor
+			}
 	}
     
 	public static void draw(int line, int col, int color, int blocks, char txt) {
-    	Console.color(Console.WHITE, color);	
+    	Console.color(Console.WHITE, color);
     	int mask = MASK_INIT;
     	for(int l=0; l<GRID_LINES ; ++l)				// For each line
     		for(int c=0; c<GRID_COLS ; ++c , mask>>=1 )	// For each column
@@ -84,8 +117,6 @@ public class Piece {
     	Console.GREEN  /*Z*/
     };
     
-    private static final int GRID_LINES=4, GRID_COLS=4;
-    private static final int MASK_INIT=0x8000;
     
     /**
      * Blocks of each piece of <b>Tetris</b> <br>

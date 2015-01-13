@@ -3,6 +3,8 @@ import isel.leic.pg.Console;
 public class Board {
 	public static final int BASE_LINE = 0, BASE_COL = 1, DIM_LINES = 20,
 			DIM_COLS = 10;
+	
+	static int[][] colorMatrix = new int[DIM_LINES+1][DIM_COLS+3];
 
 	public static void drawGrid() {
 		Console.color(Console.WHITE, Console.BLACK);
@@ -62,8 +64,36 @@ public class Board {
 		return line >= 0 && line < DIM_LINES && col >= 0 && col < DIM_COLS;
 	}
 	
-	//public static boolean colision(){
-		//color[] grid = new color[10];
-		
-	//}
+	public static boolean colision(int line, int col, int blocks, Piece piece){
+		//System.out.println("COLISION");
+		if(colorMatrix[line-1][col+2] != Console.BLACK){
+			System.out.println("COLISION-YES");
+			piece.storeInMatrix(line-1, col+2);
+			return true;
+		}		
+		return false;	
+	}
+	
+	public static void fillMatrix(){
+		for (int l = 0; l < colorMatrix.length; ++l) {
+			for (int c = 0; c < colorMatrix[0].length; ++c) {
+				colorMatrix[l][c] = Console.BLACK;
+			}
+		}
+	}
+	
+	public static void writeInMatrix(int line, int col, int colors){
+		colorMatrix[line][col] = colors;
+		//debugMatrix();
+		}
+	/*
+	public static void debugMatrix(){
+		System.out.println("DEBUGMATRIX");
+		for (int l = 0; l < colorMatrix.length; ++l) {
+			for (int c = 0; c < colorMatrix[0].length; ++c) {
+				System.out.print(colorMatrix[l][c] + "  ");
+			}
+			System.out.println();
+		}
+	}*/
 }
