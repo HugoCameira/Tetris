@@ -61,16 +61,17 @@ public class Board {
 	}
 
 	public static boolean validPosition(int line, int col) {
-		return line >= 0 && line < DIM_LINES && col >= 0 && col < DIM_COLS;
+		return line >= 0 && line < DIM_LINES && col >= 0 && col < DIM_COLS && !colision(line, col, 0, null);
 	}
 	
 	public static boolean colision(int line, int col, int blocks, Piece piece){
 		//System.out.println("COLISION");
-		if(colorMatrix[line-1][col+2] != Console.BLACK){
-			System.out.println("COLISION-YES");
-			piece.storeInMatrix(line-1, col+2);
-			return true;
-		}		
+//		if(validPosition(line, col))
+			if(colorMatrix[line][col] != Console.BLACK){
+				System.out.println("COLISION-YES");
+//				piece.storeInMatrix(line, col);
+				return true;
+			}		
 		return false;	
 	}
 	
@@ -84,7 +85,6 @@ public class Board {
 	
 	public static void writeInMatrix(int line, int col, int colors){
 		colorMatrix[line][col] = colors;
-		//debugMatrix();
 		}
 	/*
 	public static void debugMatrix(){

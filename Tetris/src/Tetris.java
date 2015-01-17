@@ -67,7 +67,7 @@ public class Tetris {
 
 	private static void step() {
 		if (! piece.down()) {   	// If possible, move the piece down  
-			//piece.hide();			// Hide the piece that hit bottom 	
+			piece.storeInMatrix(0, 0);		// Hide the piece that hit bottom 	
 			Console.stopMusic();
 			Console.playSound("drop");
 			piece = new Piece();	// Create a new piece of random type

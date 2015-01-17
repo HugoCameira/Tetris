@@ -66,12 +66,12 @@ public class Piece {
     			System.out.print(line+l);
     			System.out.print("  ");
     			System.out.println(col+c);
-    			if ((blocks&mask)!=0 && !Board.validPosition(line+l,col+c)){
+    			if ((blocks&mask)!=0 && !Board.validPosition(line+l,col+c) ){
     				return false; 				// If the block has no room
     			}
-    			if (Board.colision(line+l, col+c, blocks, this)) 
-    				return false; 				// If the block has no room
-    		}
+/*	     		if (Board.colision(line+l, col+c, blocks, this)) 
+	    				return false; 				// If the block has no room*/
+     		}
 		return true;
 	}
 	
@@ -88,11 +88,12 @@ public class Piece {
 	}*/
 	
 	public void storeInMatrix(int line, int col) {
+		line = this.line; col = this.column;
 	int mask = MASK_INIT;
 	int blocks = BLOCKS[type][direction];
 	for(int l=0; l<GRID_LINES ; ++l)				// For each line
 		for(int c=0; c<GRID_COLS ; ++c , mask>>=1 )	// For each column
-			if ((blocks&mask)!=0) { 		// If has a block
+			if ((blocks&mask)!=0) {	 		// If has a block
 			Board.writeInMatrix(line+l, col+c, COLORS[type]); // Mover cursor
 			}
 	}
